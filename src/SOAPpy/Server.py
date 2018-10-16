@@ -216,7 +216,7 @@ class SOAPRequestHandler(http.server.BaseHTTPRequestHandler):
                 print("\n".join([x.strip() for x in self.headers.headers]))
                 debugFooter(s)
 
-            data = self.rfile.read(int(self.headers["Content-length"]))
+            data = str(self.rfile.read(int(self.headers["Content-length"])), "utf-8")
 
             if self.server.config.dumpSOAPIn:
                 s = 'Incoming SOAP'
@@ -256,7 +256,7 @@ class SOAPRequestHandler(http.server.BaseHTTPRequestHandler):
             if self.server.config.specialArgs:
 
                 for (k,v) in  list(kw.items()):
-
+                    k = str(k, "utf-8")
                     if k[0]=="v":
                         try:
                             i = int(k[1:])
@@ -705,8 +705,3 @@ if hasattr(socket, "AF_UNIX"):
             self.allow_reuse_address= 1
 
             socketserver.UnixStreamServer.__init__(self, str(addr), RequestHandler)
-
-
-
-
-
